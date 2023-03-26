@@ -1,0 +1,14 @@
+
+
+
+#RESOURCES REQUIRED FOR STATE QUALITY CALCULATION 
+ #   Justification for resource weights 
+  #  Population	
+    # MatallicElements	
+    # Timber	
+    # MetallicAlloys	
+    # Electronics	
+    # Housing	
+    # MetallicAlloyWaste	
+    # ElectronicWaste	
+    # HousingWaste	
