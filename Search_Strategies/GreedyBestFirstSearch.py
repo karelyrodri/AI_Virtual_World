@@ -39,8 +39,8 @@ class GreedyBestFirstSearch():
                     country = countries[self.country.name]
                     if (action["type"] == Actions.Action_Type.TRANSORMATION):
                         transform = action["operator"]
-                        transform_num = self.operator.random_num_of_tranforms(country, transform) # get random number to multiply number of transforms
-                        action_node = self.operator.transform(country, transform, transform_num)
+                        transform_num = self.operator.random_num_of_tranforms(country, transform)
+                    if (transform_num > 0): action_node = self.operator.transform(country, transform, transform_num)
                     elif (action["type"] == Actions.Action_Type.TRANSFER): 
                         transfer = action["operator"]
                         quantity = self.operator.random_num_of_resource_quantity(transfer, countries) # random number of resources to transfer

@@ -49,7 +49,7 @@ class HeuristicDepthFirstSearch():
                 if (action["type"] == Actions.Action_Type.TRANSORMATION):
                     transform = action["operator"]
                     transform_num = self.operator.random_num_of_tranforms(country, transform)
-                    action_node = self.operator.transform(country, transform, transform_num)
+                    if (transform_num > 0): action_node = self.operator.transform(country, transform, transform_num)
                 elif (action["type"] == Actions.Action_Type.TRANSFER):
                     transfer = action["operator"]
                     quantity = self.operator.random_num_of_resource_quantity(transfer, countries)
