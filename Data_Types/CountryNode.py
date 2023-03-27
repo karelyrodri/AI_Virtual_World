@@ -1,5 +1,6 @@
 
 import copy
+# Country node class containing name, inital state, current state, its actions list
 class Country():
     def __init__(self, name, init_state):
         self.name = name

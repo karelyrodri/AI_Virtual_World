@@ -1,22 +1,28 @@
 import Measures
 from Data_Types import Actions
 import os
+# class representing a schedule 
+# atrribute decisions refers to actions already taken that have altered the world state
 class Schedule():
     def __init__(self):
         self.decisions = [] # list of dicts containing            
                                 # world_state: countries
                                 # action : Action type that was taken
                                 # expected_utility  : for the state
-
-    def add_next_move(self, country, countries, action):
-            country.current_state.set_quality_eval()
+# Inputs: 
+#   country: CountryNode to undergo transform analysis
+#   countries: dict of country name: countryNode
+#   action: type action that has been taken 
+    def add_next_move(self, country, countries, action): #adds to the schedule
+            country.current_state.set_quality_eval() # update country eval
+            
             if (action != None and action.action_type == Actions.Action_Type.TRANSFER):
+                # update the state quality of the country involved in TRANSFER
                 action.country_involved.current_state.set_quality_eval()
                 # country nodes in the action are the same that are in the countries list since they were assigned by reference 
                 # country = action.acting_country
-                # update the stateu quality of country involved in TRANSFER
             self.decisions.append({"world_state" : countries, "action" : action})
-            self.decisions[-1]["expected_utility"] = Measures.expected_utility(country, self.decisions)
+            self.decisions[-1]["expected_utility"] = Measures.expected_utility(country, self.decisions) # EU val calculation
 
 
     def output_scheduler(self, filename):

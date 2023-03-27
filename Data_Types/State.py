@@ -1,7 +1,5 @@
 
-# State: Set of current resource levels for all countries 
-#Heuristic: The “State 
-#Quality” of a country • How you choose to weight a state in terms of its utility/goodness
+# state class 
 class State():
     # resources weight added for the case of different countries valuing different resources
     def __init__(self, resource_weights):
@@ -9,11 +7,11 @@ class State():
         self.resource_weights = resource_weights#{"Natural":{}, "Manufactured":{}, "Waste": {}}
         self.quality_evaluation = None
 
-    def states_are_equal(self, other_state):
+    def states_are_equal(self, other_state): # not currently in use
         # states are equal if their resource counts are equal 
         return self.resources == other_state.resources
 
-
+    # set current state quality 
     def set_quality_eval(self):
         self.quality_evaluation = self.state_quality()
         # print(self.quality_evaluation)
@@ -38,7 +36,6 @@ class State():
     # ignore the accumulated waste and disregard it when viewing how great a country is 
     #ratio of waste compared to resources
 
-
     def state_quality(self):
         population = self.resources["Population"] 
         #  sum( Utility value of the (num of natural resources / population) ) 
@@ -60,15 +57,24 @@ class State():
         # print("{0} + {1} + {2}".format(natural_production_cost, manufactured_weighted, waste_weighted))
         return natural_production_cost + manufactured_weighted + waste_weighted
 
+# Inputs: 
+#   resource_name: name of current resource
+#   population: population count for the country
+#Outputs:
+#   weighted_total: input resource multiplied by its weight 
     def weighted_Resources(self, resource_name, population = None):
         weighted_total = 0
         for resource in self.resource_weights[resource_name].keys():
             resourceAmt = self.resources[resource]
-            if (population != None): resourceAmt /= population
+            if (population != None): resourceAmt /= population # used for manufactured resources
             weighted_total += self.resource_weights[resource_name][resource] * resourceAmt
         return weighted_total
 
-    def natural_resource_utility(self, ratio):
+# Inputs: 
+#   ratio: float value representing natural resource/ population
+# Outputs:
+#   utility_val: value representing the evaluation of the ratio
+    def natural_resource_utility(self, ratio): #used for natural resource calculation
         # goal is to exclude extremes
         # print("RATIO (resource/pop): {0}".format(ratio))
         utility_val = 0

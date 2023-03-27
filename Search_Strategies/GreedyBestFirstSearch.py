@@ -9,13 +9,6 @@ class GreedyBestFirstSearch():
         self.depth_bound = depth_bound
         self.country = country
 
-        # to save computational power, state.resources (dict) will be turned into a str and be used as a the key in 
-        # a expanded states dict with the value as a partial schedule to representing as soon as that state was reached, how did the rest play out
-        # after schedule is considered we can look though and add states with partial schedules 
-        # this will allow or branches in our search space to get these instead of producing the same
-        # schedules and thus saving in computational power at the expense of space
-        self.search_cache = {}
-
         # because of the frontier max size we will only get to choose a certain number of branches to explore
         # to make things interesting, all countries will scramble the possible operators so that each country
         # approaches the "development" of their country differently         
@@ -31,14 +24,12 @@ class GreedyBestFirstSearch():
     
 
     def search(self, current_depth, current_schedule):
-        # base cases
-        # if (self.frontier_completed_schedules.size() == self.frontier_max_size): # search ends when we reach frontier max size 
-        #     return # we want to backtrack and exit the entire search
+        # base case
         if (current_depth == self.depth_bound):
             self.best_schedule = current_schedule 
         else:
             frontier_partial_schedules = pq.PriorityQueue() 
-            self.actions.shuffle_actions_list()
+            self.actions.shuffle_actions_list() # shuffle to give different transfers a chance to be explored
             while (frontier_partial_schedules.size() < self.frontier_max_size):  # only considering max frontier size amount of partial schedules
                 for action in self.actions.actions_list: # size 43
                     action_node = None
@@ -48,14 +39,14 @@ class GreedyBestFirstSearch():
                     country = countries[self.country.name]
                     if (action["type"] == Actions.Action_Type.TRANSORMATION):
                         transform = action["operator"]
-                        transform_num = self.operator.random_num_of_tranforms(country, transform)
+                        transform_num = self.operator.random_num_of_tranforms(country, transform) # get random number to multiply number of transforms
                         action_node = self.operator.transform(country, transform, transform_num)
-                    elif (action["type"] == Actions.Action_Type.TRANSFER):
+                    elif (action["type"] == Actions.Action_Type.TRANSFER): 
                         transfer = action["operator"]
-                        quantity = self.operator.random_num_of_resource_quantity(transfer, countries)
+                        quantity = self.operator.random_num_of_resource_quantity(transfer, countries) # random number of resources to transfer
                         if (quantity > 0): action_node = self.operator.transfer(transfer, quantity, countries) 
 
-                    if (action_node != None): 
+                    if (action_node != None): # we wont count actions that did not occur
                         next_schedule = copy.deepcopy(current_schedule)
                         next_schedule.add_next_move(country, countries, action_node)
                         frontier_partial_schedules.push(next_schedule) # all partial schedules are of size depth bound
@@ -63,7 +54,7 @@ class GreedyBestFirstSearch():
             best_partial_schedule = frontier_partial_schedules.peek()
             self.search(current_depth + 1, best_partial_schedule)
         return
-
+    #return best schedule found
     def get_best_schedule(self):
         return self.best_schedule
     

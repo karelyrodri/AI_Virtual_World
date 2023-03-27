@@ -15,7 +15,7 @@ class HeuristicDepthFirstSearch():
         # after schedule is considered we can look though and add states with partial schedules 
         # this will allow or branches in our search space to get these instead of producing the same
         # schedules and thus saving in computational power at the expense of space
-        self.search_cache = {}
+        self.search_cache = {} # not currently implemented but will be soon 
 
         # because of the frontier max size we will only get to choose a certain number of branches to explore
         # to make things interesting, all countries will scramble the possible operators so that each country
@@ -55,12 +55,13 @@ class HeuristicDepthFirstSearch():
                     quantity = self.operator.random_num_of_resource_quantity(transfer, countries)
                     if (quantity > 0): action_node = self.operator.transfer(transfer, quantity, countries) 
 
-                if (action_node != None):
+                if (action_node != None): # only recurse if action was successful 
                     next_schedule = copy.deepcopy(current_schedule)
                     next_schedule.add_next_move(country, countries, action_node)
                     self.search(current_depth + 1, next_schedule)
         return
-
+    
+    #return best schedule found
     def get_best_schedule(self):
         return self.frontier_completed_schedules.peek()
     
