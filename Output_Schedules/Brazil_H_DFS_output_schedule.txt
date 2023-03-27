@@ -1,0 +1,18 @@
+[ (TRANSFORM self ((MetallicAlloys 938)(MetallicAlloysWaste 938))) EU: 155.16448598130842
+(TRANSFORM self ((Electronics 618)(ElectronicsWaste 309))) EU: -33.235338785046736
+(TRANSFORM self ((Housing 91)(HousingWaste 91))) EU: -62.85070093457945
+(TRANSFORM self ((Housing 10)(HousingWaste 10))) EU: -50.26364632009347
+(TRANSFORM self ((Housing 4)(HousingWaste 4))) EU: -38.63542092581776
+]
+[ (TRANSFORM self ((MetallicAlloys 6)(MetallicAlloysWaste 6))) EU: 96.69252336448602
+(TRANSFORM self ((Housing 2)(HousingWaste 2))) EU: 71.40806074766357
+(TRANSFER Brazil self (Housing 3)) EU: 13.059244827984603
+(TRANSFER Brazil self (MetallicElements 7)) EU: 9.538406128284569
+(TRANSFORM self ((Electronics 2)(ElectronicsWaste 1))) EU: 30.187152270735993
+]
+[ (TRANSFORM self ((MetallicAlloys 1)(MetallicAlloysWaste 1))) EU: -1.0471962616822452
+(TRANSFER Brazil self (MetallicAlloysWaste 151)) EU: -5.135116749973379
+(TRANSFER Brazil self (ElectronicsWaste 73)) EU: -6.304566087629984
+(TRANSFER Brazil self (Timber 2769)) EU: -4.92814289249573
+(TRANSFER Brazil self (Electronics 193)) EU: -2.307884082836311
+]

@@ -37,7 +37,7 @@ class VirtualWord ():
             # approached for a transer, for now we just pass in all the countries         
             action_list = Actions.Action_List(country_transforms, resources, self.world_countries[country], self.world_countries)
             self.world_countries[country].actions_list = action_list
-            # print(len(action_list.actions_list))
+    
          
            
 
@@ -101,12 +101,13 @@ def main ():
     num_out_schedules = 3
     for i in range(num_out_schedules):
         for country in world.world_countries.values():
-            depth_bound = 8 # how much can they develop in one turn 
-            frontier_max_size = 20 # how far can their search get 
+            depth_bound = 5 # how much can they develop in one turn 
+            frontier_max_size = 100 # how far can their search get 
             world.country_scheduler(country.name, "\\Initial_Data\\Resources.csv", initial_state_file, \
                                                  "output_schedule.txt", num_out_schedules, depth_bound, \
                                                 frontier_max_size, world.Search_Type.HueristicDFS)
                                                         #   world.Search_Type.GreedyBestFirstSearch 
+            
     # plot graphs and save
     gr.Graph_Results(world.winning_country_schedules, depth_bound, num_out_schedules)
 
