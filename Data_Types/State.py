@@ -4,9 +4,9 @@
 #Quality” of a country • How you choose to weight a state in terms of its utility/goodness
 class State():
     # resources weight added for the case of different countries valuing different resources
-    def __init__(self, resourceWeights):
+    def __init__(self, resource_weights):
         self.resources = {}
-        self.resource_weights = resourceWeights#{"Natural":{}, "Manufactured":{}, "Waste": {}}
+        self.resource_weights = resource_weights#{"Natural":{}, "Manufactured":{}, "Waste": {}}
         self.quality_evaluation = None
 
     def states_are_equal(self, other_state):
@@ -57,7 +57,7 @@ class State():
         waste_weighted = self.weighted_Resources("Waste")
         # print("waste: {0}".format(waste_weighted))
 
-        print("{0} + {1} + {2}".format(natural_production_cost, manufactured_weighted, waste_weighted))
+        # print("{0} + {1} + {2}".format(natural_production_cost, manufactured_weighted, waste_weighted))
         return natural_production_cost + manufactured_weighted + waste_weighted
 
     def weighted_Resources(self, resource_name, population = None):

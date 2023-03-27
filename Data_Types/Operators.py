@@ -31,7 +31,7 @@ class Operators():
 #    boolean succesful or failure of transform
     def transform(self, country, transform, num_transforms = 1):
         sufficient_qty = True # ensures transform is only done if the country has enough resources
-        print(transform.name)
+        # print(transform.name)
         for resource in transform.inputs.keys():
             qty = transform.inputs[resource]
             if (not self.sufficient_quantity(country, resource, qty * num_transforms)):
@@ -76,7 +76,7 @@ class Operators():
     def random_num_of_tranforms(self, country, transform):
         max_num_of_transforms = self.max_num_of_transform(country, transform)
         # random done by probability 
-        return math.floor(random.uniform(0.1, 1) * max_num_of_transforms)
+        return math.floor(random.uniform(0.5, 1) * max_num_of_transforms)
 
 # Inputs: 
 #   transfer: Transfer type with specs on those involved and what
@@ -102,7 +102,7 @@ class Operators():
 # Outputs:
 #    random_num_of_quantity: int representing a random valid quantity of resources to possibly be given up 
     def random_num_of_resource_quantity(self, transfer, countries):
-        # resources with high weight have a lower range used for randomly selecting the quantity to be traded
+        # resources with high weight have a lower range used for randomly selecting the quantity to be transfered
         # we only are willing to give up a limited amount of high importance resources 
         # vs an item of less value we may not care as much if most of it is gone
         resource = transfer.resource

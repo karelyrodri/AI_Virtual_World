@@ -1,4 +1,4 @@
-from Data_Types import Operators as ops, Actions, Schedule as sched, Stack as s
+from Data_Types import Operators as ops, Actions, PriorityQueue as pq, Schedule as sched
 import copy
 
 
@@ -22,14 +22,10 @@ class HeuristicDepthFirstSearch():
         # approaches the "development" of their country differently         
         self.actions = actions
         self.operator = ops.Operators()
-        self.frontier_completed_schedules = s.Stack() # each schedule will be of size Depth Bound
+        self.frontier_completed_schedules = pq.PriorityQueue() # each schedule will be of size Depth Bound
         self.heuristicDFS(copy.deepcopy(country), copy.deepcopy(countries)) 
-
-        # self.best_schedule = self.heuristicDFS(copy.deepcopy(country))
         
     def heuristicDFS(self, country, countries): # TREE BASED RECURSIVE APPROACH 
-        # stack = s.Stack()
-
         initial_schedule = sched.Schedule() # root node / start of partial schedule
         initial_schedule.add_next_move(country, countries, None) # Initial State
         self.search(0, initial_schedule) 
@@ -59,7 +55,7 @@ class HeuristicDepthFirstSearch():
                     quantity = self.operator.random_num_of_resource_quantity(transfer, countries)
                     if (quantity > 0): action_node = self.operator.transfer(transfer, quantity, countries) 
 
-                if (action_node != None): # may not be necessary but still check that the action node creation succeeded
+                if (action_node != None):
                     next_schedule = copy.deepcopy(current_schedule)
                     next_schedule.add_next_move(country, countries, action_node)
                     self.search(current_depth + 1, next_schedule)

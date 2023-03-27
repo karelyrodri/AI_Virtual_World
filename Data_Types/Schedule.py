@@ -7,7 +7,6 @@ class Schedule():
                                 # world_state: countries
                                 # action : Action type that was taken
                                 # expected_utility  : for the state
-                                ###### state : state that has been altered
 
     def add_next_move(self, country, countries, action):
             country.current_state.set_quality_eval()
@@ -18,12 +17,6 @@ class Schedule():
                 # update the stateu quality of country involved in TRANSFER
             self.decisions.append({"world_state" : countries, "action" : action})
             self.decisions[-1]["expected_utility"] = Measures.expected_utility(country, self.decisions)
-            # print("_____________________________")
-            # print("Expected Utilities")
-            # print(self.decisions[-1]["expected_utility"])
-            # print("For state quality:")
-            # country.print_country_data()
-            # print("_____________________________")
 
 
     def output_scheduler(self, filename):

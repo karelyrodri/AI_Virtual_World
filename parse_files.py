@@ -62,36 +62,6 @@ def parse_initial_resources(file_name): # = "\\Initial_Data\\Resources.csv"
     return resources
 
 
-# def parse_initial_state(init_file = "\\Initial_Data\\Initial_State.csv", \
-#                         resource_weight_file = "\\Initial_Data\\Resources.csv"): # 
-#     file_path = os.getcwd() + init_file
-#     countries = []
-#     with open(file_path, newline='', encoding='utf-8') as file:
-#         reader = csv.reader(file)
-#         categories = next(reader)
-#         for row in reader:
-#             name = row[0]
-#             init_state = State.State(parse_initial_resources(resource_weight_file))
-#             # print(name)
-#             for i in range(1, len(categories)):
-#                 resource = categories[i]
-#                 amt = int(row[i])
-#                 init_state.resources[resource] = amt
-#                 # print("{0} - {1}".format(resource, amt))
-#             # print(init_state.resourceWeights)
-#             # add waste to the resources  from the initial resources file
-#             for waste in init_state.resourceWeights["Waste"].keys():
-#                 init_state.resources[waste] = 0
-#             # print(init_state.resources)
-#             init_state.set_quality_eval()
-#             print(name)
-#             countries.append(CountryNode.Country(name, init_state))
-#     file.close()
-#     return countries 
-
-# parse_initial_state()
-# parse_transforms()
-
 def parse_initial_state(init_file = "\\Initial_Data\\Initial_State.csv"):
     file_path = os.getcwd() + init_file
     countries = {} # {country name : {resource : qty}}
@@ -108,6 +78,4 @@ def parse_initial_state(init_file = "\\Initial_Data\\Initial_State.csv"):
     file.close()
     return countries
 
-    
-# parse_transforms()
-# parse_initial_state()
+  

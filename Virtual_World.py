@@ -2,13 +2,17 @@
 # CS5260 AI
 #Programming Project Part 1
 
-import Measures
+
 from Data_Types import CountryNode, State, Actions
-from Search_Strategies import HeuristicDepthFirstSearch as H_dfs
+from Search_Strategies import HeuristicDepthFirstSearch as H_dfs, GreedyBestFirstSearch as GreedyBestFS
 import parse_files as pf
 from Output_Graphs import graph_world_state as gr
+from enum import Enum
 
 class VirtualWord ():
+    class Search_Type(Enum):
+        HueristicDFS = 0,
+        GreedyBestFirstSearch = 1
 
     def __init__ (self):
         # self.operators = None
@@ -28,7 +32,7 @@ class VirtualWord ():
         for country in self.world_countries.keys():
             country_transforms = country_data[country]
             resources = self.world_countries[country].current_state.resources.keys()
-            print(self.world_countries)
+            # print(self.world_countries)
             # for part 2 we can consider alliances in which only those who are allies can be 
             # approached for a transer, for now we just pass in all the countries         
             action_list = Actions.Action_List(country_transforms, resources, self.world_countries[country], self.world_countries)
@@ -58,24 +62,25 @@ class VirtualWord ():
         return transforms
 
     def country_scheduler(self, country_name, resource_file, initial_state_file, \
-                                     output_schedule_file, num_output_schedules, \
-                                                depth_bound, frontier_max_size):
-        print("-------------------------")
-        print(country_name)
+                                      output_schedule_file, num_output_schedules, \
+                                      depth_bound, frontier_max_size, search_algorithm):
+                                               
+        print(country_name + " entered scheduler")
         country = self.world_countries[country_name]
         action_list =  country.actions_list
 
         #conduct search
-        ##### Heuristic DFS #####
-        schedule = H_dfs.HeuristicDepthFirstSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
-        print(schedule.decisions)
+        if (search_algorithm == self.Search_Type.HueristicDFS):
+            schedule = H_dfs.HeuristicDepthFirstSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
+        elif (search_algorithm == self.Search_Type.GreedyBestFirstSearch):
+            schedule = GreedyBestFS.GreedyBestFirstSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
+        # print(schedule.decisions)
         # self.print_world_country_data()
         #update the world state 
         self.world_countries = schedule.decisions[-1]["world_state"]
         # print to text file
-        schedule.output_scheduler("{0}_HDFS_{1}".format(country.name, output_schedule_file))
+        schedule.output_scheduler("{0}_H_DFS_{1}".format(country.name, output_schedule_file))
         self.winning_country_schedules.setdefault(country_name, []).append(schedule)
-        print(len(schedule.decisions))
         print("____")
         # to reset and try another algo for each coutry set self.current state to self.intital state
         # country.current_state = country.initial_state
@@ -84,7 +89,6 @@ class VirtualWord ():
         for country in self.world_countries.values():
             country.print_country_data()
     
-
 ###################################
 #         Main program
 ###################################
@@ -96,13 +100,14 @@ def main ():
     num_out_schedules = 1
     for i in range(num_out_schedules):
         for country in world.world_countries.values():
-            depth_bound = 5 # how much can they develop in one turn 
-            frontier_max_size = 5 # how far can their search get 
+            depth_bound = 20 # how much can they develop in one turn 
+            frontier_max_size = 10 # how far can their search get 
             world.country_scheduler(country.name, "\\Initial_Data\\Resources.csv", initial_state_file, \
-                                            "output_schedule.txt", num_out_schedules, depth_bound, frontier_max_size)
-            break
+                                                 "output_schedule.txt", num_out_schedules, depth_bound, \
+                                                frontier_max_size, world.Search_Type.HueristicDFS)
+                                                        #   world.Search_Type.GreedyBestFirstSearch 
     # plot graphs and save
-    gr.Graph_Results(world.winning_country_schedules, depth_bound)
+    gr.Graph_Results(world.winning_country_schedules, depth_bound, num_out_schedules)
 
 ###################################
 #        Main entry point

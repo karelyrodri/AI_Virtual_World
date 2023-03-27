@@ -15,15 +15,19 @@ def undiscounted_schedule_reward(country, schedule):
 
 def discounted_schedule_reward(country, schedule):
     #DR(ci, sj) = gammaN ∗ (Qend(ci, sj) – Qstart(ci, sj)), where 0 <= gamma < 1
-    gamma = 0.1 # where 0 <= gamma < 1
+    gamma = 0.75 # where 0 <= gamma < 1
     N = len(schedule) - 1
-    return (gamma ** N) * undiscounted_schedule_reward(country, schedule)
+    discounted = (gamma ** N) * undiscounted_schedule_reward(country, schedule)
+    return discounted
 
 
 def country_accepts_probability(country, schedule):
-    x_0 = 0
-    k = 1
-    x = -k * (discounted_schedule_reward(country, schedule) - x_0)
+    x_0 = 5
+    k = 0.001
+    discounted_reward = discounted_schedule_reward(country, schedule) 
+    x = -k * (discounted_reward - x_0)
+    # print("K: {0}   -   DS: {1}  -  {2}".format(k, discounted_reward, x_0))
+    # print("X: {0}".format(x))
     return 1 / (1 + np.exp(x))
 
 
@@ -51,9 +55,9 @@ def expected_utility(country, schedule):
     # print(country.current_state.quality_evaluation)
     # (P(sj) ∗ DR(ci, sj)) + ((1 −P(sj)) ∗ C), where ci = self
     # probability country accepts * discounted reward of self
-    C = -0.1
+    C = -1
     schedule_success = schedule_success_probability(schedule)
     discounted_reward = discounted_schedule_reward(country, schedule) 
-    print("({0} * {1}) + ((1 - {0}) * {2})".format(schedule_success, discounted_reward, C))
-    print("({0}) + (({1}) * {2})".format((schedule_success * discounted_reward), (1 - schedule_success), C))
+    # print("({0} * {1}) + ((1 - {0}) * {2})".format(schedule_success, discounted_reward, C))
+    # print("({0}) + (({1}) * {2})".format((schedule_success * discounted_reward), (1 - schedule_success), C))
     return  (schedule_success * discounted_reward) + ((1 - schedule_success) * C)
