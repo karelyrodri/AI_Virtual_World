@@ -1,18 +1,18 @@
-[ (TRANSFORM self ((MetallicAlloys 306)(MetallicAlloysWaste 306))) EU: 393.56808510638297
-(TRANSFORM self ((Electronics 222)(ElectronicsWaste 111))) EU: 117.02992021276597
-(TRANSFORM self ((Electronics 80)(ElectronicsWaste 40))) EU: 39.62483377659574
-(TRANSFORM self ((MetallicAlloys 290)(MetallicAlloysWaste 290))) EU: 187.07351230053195
-(TRANSFORM self ((MetallicAlloys 44)(MetallicAlloysWaste 44))) EU: 158.21103515625
+[ (TRANSFORM self ((MetallicAlloys 278)(MetallicAlloysWaste 278))) EU: 357.5553191489362
+(TRANSFORM self ((Electronics 216)(ElectronicsWaste 108))) EU: 94.83510638297872
+(TRANSFORM self ((Electronics 54)(ElectronicsWaste 27))) EU: 38.6266954787234
+(TRANSFORM self ((Housing 1)(HousingWaste 1))) EU: 27.659291888297886
+(TRANSFORM self ((MetallicAlloys 247)(MetallicAlloysWaste 247))) EU: 121.26168550531912
 ]
-[ (TRANSFORM self ((Housing 33)(HousingWaste 33))) EU: -102.52819148936163
-(TRANSFORM self ((Housing 6)(HousingWaste 6))) EU: -90.87726063829786
-(TRANSFORM self ((MetallicAlloys 12)(MetallicAlloysWaste 12))) EU: -59.47629654255317
-(TRANSFORM self ((MetallicAlloys 1)(MetallicAlloysWaste 1))) EU: -44.064619348404236
-(TRANSFER Spain self (MetallicAlloysWaste 5)) EU: -8.897158146952222
+[ (TRANSFORM self ((Housing 38)(HousingWaste 38))) EU: -118.06276595744671
+(TRANSFORM self ((Electronics 110)(ElectronicsWaste 55))) EU: -176.8176861702127
+(TRANSFORM self ((Electronics 20)(ElectronicsWaste 10))) EU: -144.65016622340423
+(TRANSFORM self ((MetallicAlloys 267)(MetallicAlloysWaste 267))) EU: 36.38739195478728
+(TRANSFORM self ((MetallicAlloys 176)(MetallicAlloysWaste 176))) EU: 98.9141476894947
 ]
-[ (TRANSFER Spain self (ElectronicsWaste 119)) EU: -25.85910806097026
-(TRANSFER Spain self (Electronics 106)) EU: -10.9526632300633
-(TRANSFER Spain self (HousingWaste 12)) EU: -8.565271769850371
-(TRANSFER Spain self (HousingWaste 2)) EU: -6.650932083457938
-(TRANSFER Spain self (Timber 626)) EU: -5.189468123809695
+[ (TRANSFORM self ((MetallicAlloys 41)(MetallicAlloysWaste 41))) EU: 52.73297872340413
+(TRANSFORM self ((MetallicAlloys 1)(MetallicAlloysWaste 1))) EU: 40.514361702127765
+(TRANSFER Spain self (ElectronicsWaste 3)) EU: 6.828812442443134
+(TRANSFER Spain self (HousingWaste 492)) EU: 0.9813003871475009
+(TRANSFER Spain self (MetallicAlloys 72)) EU: 8.865618608505017
 ]
