@@ -6,7 +6,7 @@ import random
 class Action_Type(Enum):
         TRANSORMATION = 0,
         TRANSFER = 1
-# used for easy retrieval of information of the taken action
+# used for easy retrieval of information of the taken action primarily used in Schedules and is helpful for printing out the output files 
 class Action(): # THIS IS NOT USED IN THE ACTION LIST, its returned from calling an operator.transform or operator.transfer
 
     def __init__(self, action_type, resources_involved, acting_country , country_involved = None):
