@@ -76,6 +76,7 @@ class Operators():
     def random_num_of_tranforms(self, country, transform):
         max_num_of_transforms = self.max_num_of_transform(country, transform)
         # random done by probability 
+        
         return math.floor(random.uniform(0.5, 1) * max_num_of_transforms)
 
 # Inputs: 
@@ -91,7 +92,7 @@ class Operators():
             gifter.current_state.resources[resource] -= quantity
             receiver.current_state.resources[resource] += quantity
             # these nodes in Action are a reference of the current countries list
-            return a.Action(a.Action_Type.TRANSFER, {resource : quantity}, gifter, receiver) 
+            return a.Action(a.Action_Type.TRANSFER, {resource : quantity}, receiver, gifter) 
         else:
             print("Insufficient Resources to complete the Transfer of {0} {1} from \
                   {2} to {3}".format(quantity, resource, gifter.name, receiver.name)) 
