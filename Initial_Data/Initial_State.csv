@@ -1,7 +1,7 @@
-Country,Population,MetallicElements,Timber,MetallicAlloys,Electronics,Housing
-Mexico,1260,7800,3000,0,0,0
-Brazil,2140,5000,1300,0,0,0
-Colombia,510,4400,150,0,0,0
-Spain,470,2800,200,0,0,0
-Italy,590,5200,1400,0,0,0
-Argentina,4500,5000,7500,0,0,0
+Country,Population,MetallicElements,PlantsAndFibers,SolarPower,Timber,Water,Seeds,Clay,MetallicAlloys,EcoHousing,Electronics,Ceramics,Housing,Textiles,Food
+Mexico,1260,4000,3800,2000,3400,1600,2000,4500,0,0,0,0,0,0,0
+Brazil,2140,4700,4000,5000,3200,5000,4300,4400,0,0,0,0,0,0,0
+Colombia,510,2000,2700,400,500,1300,1400,2300,0,0,0,0,0,0,0
+Spain,470,3500,2000,3800,2700,2300,1000,800,0,0,0,0,0,0,0
+Italy,590,4000,1800,4100,2900,3500,1600,1000,0,0,0,0,0,0,0
+Argentina,4500,6200,4500,4000,3500,2500,1750,4600,0,0,0,0,0,0,0

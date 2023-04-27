@@ -1,0 +1,7 @@
+Country,Alliance,Depth_Bound,Max_Frontier_Size,Search,Resources_File
+Mexico,1,6,20,H_DFS,_Mexico_Columbia_Argentina
+Brazil,2,6,20,GBFS,_Brazil_Italy_Spain
+Colombia,1,6,12,H_DFS,_Mexico_Columbia_Argentina
+Spain,2,6,12,RS,_Brazil_Italy_Spain
+Italy,2,6,12,RS,_Brazil_Italy_Spain
+Argentina,1,6,20,GBFS,_Mexico_Columbia_Argentina

@@ -27,3 +27,104 @@ Electronics Template
     (OUTPUTS (Population 1) 
              (Electronics 2)
              (ElectronicsWaste 1)))
+
+E-WasteRecycled Template 
+
+(TRANSFORM C
+    (INPUTS (Population 7) 
+            (ElectronicsWaste 5) 
+            (SolarPower 2))
+    (OUTPUTS (Population 7) 
+             (MetallicAlloys 3)
+             (ElectronicsWaste 2)
+             (SolarPower 2)))
+
+MetallicAlloysWasteRecycled Template 
+
+(TRANSFORM C
+    (INPUTS (Population 7) 
+            (MetallicAlloys 1) 
+            (MetallicAlloysWaste 5)
+            (SolarPower 3))
+    (OUTPUTS (Population 7) 
+             (MetallicAlloys 3)
+             (SolarPower 3)))      
+
+Ceramics/TextilesWasteRecycled Template 
+
+(TRANSFORM C
+    (INPUTS (Population 4) 
+            (TextilesWaste 2) 
+            (Clay 3))
+    (OUTPUTS (Population 4) 
+             (Ceramics 2)))        
+
+WaterWasteRecycled Template 
+
+(TRANSFORM C
+    (INPUTS (Population 2) 
+            (WaterWaste 3) 
+            (Clay 3))
+    (OUTPUTS (Population 2) 
+             (Water 3)
+             (Clay 3)))  
+             
+Compost/FoodWasteHousingWasteRecycled Template 
+
+(TRANSFORM C
+    (INPUTS (Population 5) 
+            (HousingWaste 3) 
+            (FoodWaste 1)
+            (Water 2)
+            (Seeds 2))
+    (OUTPUTS (Population 5) 
+             (WaterWaste 1)
+             (PlantsAndFibers 2)))  
+
+EcoHousing Template 
+
+(TRANSFORM C
+    (INPUTS (Population 5) 
+            (MetallicElements 1) 
+            (Timber 5)
+            (Ceramics 2)
+            (Clay 3))
+    (OUTPUTS (Population 5) 
+             (EcoHousing 1)))  
+        
+Textiles Template 
+
+(TRANSFORM C
+    (INPUTS (Population 3) 
+            (PlantsAndFibers 2) 
+            (Water 3))
+    (OUTPUTS (Population 3) 
+             (Textiles 1)
+             (TextilesWaste 1)
+             (WaterWaste 2))) 
+                     
+Timber/PlantsAndFibers Template 
+
+(TRANSFORM C
+    (INPUTS (Population 10) 
+            (Seeds 2) 
+            (SolarPower 3)
+            (Water 2))
+    (OUTPUTS (Population 10) 
+             (PlantsAndFibers 3)
+             (SolarPower 3)
+             (Seeds 3)
+             (Timber 1))) 
+
+Food Template 
+
+(TRANSFORM C
+    (INPUTS (Population 5) 
+            (PlantsAndFibers 5) 
+            (SolarPower 3)
+            (Water 2))
+    (OUTPUTS (Population 5) 
+             (Food 3)
+             (WaterWaste 1)
+             (SolarPower 3)
+             (FoodWaste 1))) 

@@ -4,15 +4,13 @@
 
 # MAIN FUNCTION FOUND AT THE BOTTOM
 from Data_Types import CountryNode, State, Actions
-from Search_Strategies import HeuristicDepthFirstSearch as H_dfs, GreedyBestFirstSearch as GreedyBestFS
+from Search_Strategies import HeuristicDepthFirstSearch as H_dfs, GreedyBestFirstSearch as GreedyBestFS, RandomSearch
 import parse_files as pf
 from Output_Graphs import graph_world_state as gr
-from enum import Enum
+import copy
+import os
 
 class VirtualWord ():
-    class Search_Type(Enum):
-        HueristicDFS = 0,
-        GreedyBestFirstSearch = 1
 
     def __init__ (self):
         # self.operators = None
@@ -22,94 +20,100 @@ class VirtualWord ():
 
 
     def setup_virtual_World(self):
-        country_data = {}
         self.init_state_data = pf.parse_initial_state()
+        countries_params = pf.parse_configurations()
+        transforms = pf.parse_transforms()
+        allies = {}
         for country in self.init_state_data.keys():
-            # can easily do something like country + "Resources.csv" or country + "Tranforms.txt" 
-            transforms = self.setup_country_node(country, "Resources.csv", "TRANSFORMS.txt")
-            country_data[country] = transforms
+            alliance = self.setup_country_node(country, countries_params[country])
+            allies.setdefault(alliance, []).append(country)
         # set up countries action_lists not that we have all the countryNodes created 
         for country in self.world_countries.keys():
-            country_transforms = country_data[country]
-            resources = self.world_countries[country].current_state.resources.keys()
+            countryNode = self.world_countries[country]
+            resources = countryNode.current_state.resources.keys()
+            self.world_countries[country].allies = allies[countryNode.allies] #overwritting alliance number with alliance list 
             # print(self.world_countries)
             # for part 2 we can consider alliances in which only those who are allies can be 
             # approached for a transer, for now we just pass in all the countries         
-            action_list = Actions.Action_List(country_transforms, resources, self.world_countries[country], self.world_countries)
+            action_list = Actions.Action_List(transforms, resources, country, countryNode.allies)
             self.world_countries[country].actions_list = action_list
-    
-         
            
 
-    def setup_country_node(self, name, resource_file, transform_file):
-        init_state = State.State(pf.parse_initial_resources("\\Initial_Data\\" + resource_file))
+    def setup_country_node(self, name, params):
+        resource_file = "\\Initial_Data\\Resources{0}.csv".format(params["Resources_File"])
+        init_state = State.State(pf.parse_initial_resources(resource_file))
         resource_data = self.init_state_data[name]
         for resource in resource_data.keys():
             amt = resource_data[resource]
             init_state.resources[resource] = amt
-
         # add waste to the resources  from the initial resources file
         for waste in init_state.resource_weights["Waste"].keys():
             init_state.resources[waste] = 0
         # evaluate state quality for intial resources
         init_state.set_quality_eval()
-        country_node = CountryNode.Country(name, init_state)
+        allyNum = params["Alliance"]
+        country_node = CountryNode.Country(name, init_state, int(params["Depth_Bound"]), 
+                                           int(params["Max_Frontier_Size"]), params["Search"], 
+                                           allyNum)
         self.world_countries[name] = country_node
-
-        transforms = pf.parse_transforms("\\Initial_Data\\" + transform_file)
-        return transforms
+        return allyNum
 
 
-    def country_scheduler(self, country_name, resource_file, initial_state_file, \
-                                      output_schedule_file, num_output_schedules, \
-                                      depth_bound, frontier_max_size, search_algorithm):
+    def country_scheduler(self, country, output_schedule_file, depth_bound, frontier_max_size):
                                                
-        print(country_name + " entered scheduler")
-        country = self.world_countries[country_name]
+        print(country.name + " entered scheduler")
+     
         action_list =  country.actions_list
 
         #conduct search
-        search_name = ""
-        if (search_algorithm == self.Search_Type.HueristicDFS):
-            schedule = H_dfs.HeuristicDepthFirstSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
-            search_name = "H_DFS"
-        elif (search_algorithm == self.Search_Type.GreedyBestFirstSearch):
+        search_algorithm = country.search
+        # previous_best = self.winning_country_schedules.get(country.name) #pick up where we left off if applies 
+        # if (previous_best != None): previous_best = previous_best[-1]
+            
+        if (search_algorithm == "H_DFS"):
+            schedule = H_dfs.HeuristicDepthFirstSearch(country, action_list, depth_bound, frontier_max_size, \
+                                                       self.world_countries).get_best_schedule()
+        elif (search_algorithm == "GBFS"):
             schedule = GreedyBestFS.GreedyBestFirstSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
-            search_name = "GBFS"
-        # print(schedule.decisions)
-        # self.print_world_country_data()
-        #update the world state 
-        self.world_countries = schedule.decisions[-1]["world_state"]
-        # print to text file
-        schedule.output_scheduler("{0}_{1}_{2}".format(country.name, search_name, output_schedule_file))
-        self.winning_country_schedules.setdefault(country_name, []).append(schedule)
+        ##### ADDITION #####
+        elif (search_algorithm == "RS"):
+            schedule = RandomSearch.RandomSearch(country, action_list, depth_bound, frontier_max_size, self.world_countries).get_best_schedule()
 
+        self.world_countries = copy.deepcopy(schedule.latest_world_state())
+
+        # print to text file
+        schedule.output_scheduler(output_schedule_file)
+        self.winning_country_schedules.setdefault(country.name, []).append(schedule)
 
 
     def print_world_country_data(self):
         for country in self.world_countries.values():
             country.print_country_data()
     
+def delete_old_output_schedules():
+    path = os.getcwd() + "\\Output_Schedules\\"
+    for file_name in os.listdir(path):
+        os.remove(path + file_name)
 ###################################
 #         Main program
 ###################################
+
+num_out_schedules = 5
+
 def main ():
-    initial_state_file = "\\Initial_Data\\Initial_State.csv"
+    delete_old_output_schedules()
     world = VirtualWord()
     world.setup_virtual_World()
-
-    num_out_schedules = 3
+    print("Setup complete")
+    
     for i in range(num_out_schedules):
         for country in world.world_countries.values():
-            depth_bound = 5 # how much can they develop in one turn 
-            frontier_max_size = 100 # how far can their search get 
-            world.country_scheduler(country.name, "\\Initial_Data\\Resources.csv", initial_state_file, \
-                                                 "output_schedule.txt", num_out_schedules, depth_bound, \
-                                                frontier_max_size, world.Search_Type.HueristicDFS)
-                                                        #   world.Search_Type.GreedyBestFirstSearch 
             
+            output_file = "{0}_{1}_output_schedule.txt".format(country.name, country.search)
+            world.country_scheduler(country, output_file, country.depth_bound, country.max_frontier_size)
+                                           
     # plot graphs and save
-    gr.Graph_Results(world.winning_country_schedules, depth_bound, num_out_schedules)
+    gr.Graph_Results(world.winning_country_schedules)
 
 
 if __name__ == "__main__":

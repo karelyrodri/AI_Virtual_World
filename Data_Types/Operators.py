@@ -47,7 +47,7 @@ class Operators():
                 qty = transform.outputs[resource] * num_transforms
                 if (resource != "Population"): gained_resources[resource] = qty
                 country.current_state.resources[resource] += qty 
-            return a.Action(a.Action_Type.TRANSORMATION, gained_resources, country)
+            return a.Action(a.Action_Type.TRANSORMATION, gained_resources, country, action_name = transform.name)
         else:
             print("Insufficient Resources to complete the Transformation of {0} \
                   for country {1}".format(transform.name, country.name))
@@ -76,8 +76,12 @@ class Operators():
     def random_num_of_tranforms(self, country, transform):
         max_num_of_transforms = self.max_num_of_transform(country, transform)
         # random done by probability 
+        random_amt = math.floor(random.uniform(0.4, 0.7) * max_num_of_transforms)
+        if (random_amt == 0 and max_num_of_transforms != 0):
+            return random.randint(0, max_num_of_transforms)
+        return random_amt
+
         
-        return math.floor(random.uniform(0.5, 1) * max_num_of_transforms)
 
 # Inputs: 
 #   transfer: Transfer type with specs on those involved and what

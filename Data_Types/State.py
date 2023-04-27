@@ -40,22 +40,25 @@ class State():
         population = self.resources["Population"] 
         #  sum( Utility value of the (num of natural resources / population) ) 
         #  each production business should be evaluated seperately before summing   
-        natural_production_cost = 0
+        natural_cost = 0
         for resource in self.resource_weights["Natural"].keys():
             if (resource != "Population"):
                 ratio = self.resources[resource] / population
                 # print("Resource: {0}  -- resource count: {1}   --  pop: {2}".format(resource, self.resources[resource], population))
-                natural_production_cost += self.natural_resource_utility(ratio)
+                if (resource in ["Timber", "MetallicElements", "PlantsAndFibers"]):
+                    natural_cost += self.production_utility(ratio)
+                elif (resource in ["Seeds", "Clay" ]):
+                    natural_cost += self.organic_utility(ratio)
+                elif (resource in ["SolarPower", "Water"]):
+                    natural_cost += self.energy_source_utility(ratio)
+
 
         #  + sum(manufactured resources / population * weight)
         manufactured_weighted = self.weighted_Resources("Manufactured", population) * 1000 # because a decimal is returned
         # print("manufactured: {0}".format(manufactured_weighted))
         #  + sum(waste * wasteWeight)
-        waste_weighted = self.weighted_Resources("Waste")
-        # print("waste: {0}".format(waste_weighted))
-
-        # print("{0} + {1} + {2}".format(natural_production_cost, manufactured_weighted, waste_weighted))
-        return natural_production_cost + manufactured_weighted + waste_weighted
+        waste_weighted = self.weighted_Resources("Waste") * 0.1
+        return natural_cost + manufactured_weighted + waste_weighted
 
 # Inputs: 
 #   resource_name: name of current resource
@@ -68,31 +71,64 @@ class State():
             resourceAmt = self.resources[resource]
             if (population != None): resourceAmt /= population # used for manufactured resources
             weighted_total += self.resource_weights[resource_name][resource] * resourceAmt
+
+            #penalize if there way too much food
+            if ((resource == "Food" and resourceAmt >= 5) or 
+                (resource == "MetallicAlloys" and resourceAmt >= 0.8)):
+                # 5 times the population is too much food 
+                # 2 times the popultion is too many metallic allots 
+                # resourceAmt has already been changed to the ratio of resource per person line 72
+                weighted_total -= 100
+            if ("Housing" in resource and (resourceAmt > 1 and resourceAmt <= 6)):
+                weighted_total += 300
+                if ("Eco" in resource): weighted_total += 100
+
         return weighted_total
 
 # Inputs: 
 #   ratio: float value representing natural resource/ population
 # Outputs:
 #   utility_val: value representing the evaluation of the ratio
-    def natural_resource_utility(self, ratio): #used for natural resource calculation
+    def production_utility(self, ratio): #used for natural resource calculation
+        #Timber, MetallicElements, PlantAndFibers 
+
         # goal is to exclude extremes
-        # print("RATIO (resource/pop): {0}".format(ratio))
         utility_val = 0
         # we are looking for 3 to 8 times the amount of resource to population
-        # anything above may accumulated wasted resources or signifies slow production rate 
+        # anything above may accumulated wasted resources or signify slow production rate 
         # anything under is not enough for the population
         if (ratio >= 3 or ratio <= 8):
-            #best result
+            #best result, 
             utility_val = 10
-        elif (ratio > 20):
-            # not so great 
+        elif (ratio > 12):
+            # hoarding is not good
+            # we want to encourage a surplus of resource to be used up 
             utility_val = -5
         elif (ratio < 1):
             # terrible - not enough resources to continue prospering
+            #forces AI to consider recycling templates
             utility_val = -10
         else:
             # barely missed the mark
             utility_val = 5
-            
         return utility_val 
+    
+    # Seeds, Clay 
+    def organic_utility(self, ratio): #used for natural resource calculation
+        # bracket for organics that do not go bad
+        if (ratio < 1):
+            return -2
+        else:
+            return 5
+
+    #SolarPower, Water
+    def energy_source_utility(self, ratio):
+        # the more the merrier
+        if (ratio > 1):
+            # we never want to have less than the amount of people
+            # water is highly important so it gets a 10
+            return 10
+        else:     
+            return -5
+        # we need to resort to water waste recyling 
 

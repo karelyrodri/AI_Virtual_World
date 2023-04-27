@@ -2,10 +2,29 @@ import os
 from Data_Types import Operators
 import csv 
 
+
+##### Part2 Change #####
+def parse_configurations():
+    file_path = os.getcwd() + "\\Initial_Data\\Configurations.csv"
+    countries_params = {} # {country name: {allies: []...etc}}
+    with open(file_path, newline='', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        params = next(reader)
+        for row in reader:
+            name = row[0]
+            countries_params[name] = {}
+            for i in range(1, len(params)):
+                countries_params[name][params[i]] = row[i]
+    file.close()
+    return countries_params
+
+##########################
+
+
     # List of transforms created from parsing file
     # Idea for Part 2, different countries can have different transform templates 
-def parse_transforms(file_name): # = "\\Initial_Data\\TRANSFORMS.txt"
-    file_path = os.getcwd() + file_name
+def parse_transforms(): # = 
+    file_path = os.getcwd() + "\\Initial_Data\\TRANSFORMS.txt"
     transforms = []
     with open(file_path, mode = 'r') as file:
         lines = file.readlines()
@@ -24,11 +43,12 @@ def parse_transforms(file_name): # = "\\Initial_Data\\TRANSFORMS.txt"
     file.close()
     return transforms
 
+
 def parse_transforms_helper(transform_data):
     transform = Operators.Transform(transform_data[0])
     # print(transform_data[0])
     output_idx = transform_data.index("OUTPUTS")
-    i = transform_data.index("INPUTS") + 1 # could easily be set to 4
+    i = transform_data.index("INPUTS") + 1 
     while (i < len(transform_data)):
         if (i == output_idx): i += 1
         name = transform_data[i]
@@ -41,7 +61,6 @@ def parse_transforms_helper(transform_data):
     # print(transform.inputs)
     # print(transform.outputs)
     return transform
- 
 
 def parse_initial_resources(file_name): # = "\\Initial_Data\\Resources.csv"
     resources = {"Natural":{}, "Manufactured":{}, "Waste": {}}
@@ -62,8 +81,8 @@ def parse_initial_resources(file_name): # = "\\Initial_Data\\Resources.csv"
     return resources
 
 
-def parse_initial_state(init_file = "\\Initial_Data\\Initial_State.csv"):
-    file_path = os.getcwd() + init_file
+def parse_initial_state():
+    file_path = os.getcwd() + "\\Initial_Data\\Initial_State.csv"
     countries = {} # {country name : {resource : qty}}
     with open(file_path, newline='', encoding='utf-8') as file:
         reader = csv.reader(file)

@@ -9,6 +9,36 @@ class Schedule():
                                 # world_state: countries
                                 # action : Action type that was taken
                                 # expected_utility  : for the state
+    ##### CHANGE #####
+    def latest_EU(self):
+        return self.decisions[-1]["expected_utility"]
+    
+    def length(self):
+        return len(self.decisions)
+    
+    def get_EU(self, index):
+        return self.decisions[index]["expected_utility"]
+    
+    def latest_world_state(self):
+        return self.decisions[-1]["world_state"]
+    
+    def get_all_EUs(self):
+        EUs = []
+        for i in range(self.length()):
+            EUs.append(self.get_EU(i))
+        return EUs
+    
+    def get_all_state_qualities_by_country(self, country):
+        state_qualities = []
+        for i in range(self.length()):
+            state_quality = self.decisions[i]["world_state"][country].current_state.quality_evaluation
+            state_qualities.append(state_quality)
+        return state_qualities
+    
+    def get_search_strategy_by_country(self, country):
+        return self.latest_world_state()[country].search
+    ###################
+    
 # Inputs: 
 #   country: CountryNode to undergo transform analysis
 #   countries: dict of country name: countryNode
@@ -24,7 +54,8 @@ class Schedule():
             self.decisions.append({"world_state" : countries, "action" : action})
             self.decisions[-1]["expected_utility"] = Measures.expected_utility(country, self.decisions) # EU val calculation
 
-
+# Inputs: 
+#   filename: used as output file name  
     def output_scheduler(self, filename):
         file_path = os.getcwd() + "\\Output_Schedules\\" + filename
         with open(file_path, 'a') as output:
@@ -32,7 +63,7 @@ class Schedule():
             for decision in self.decisions[1:]:
                     action = decision["action"]
                     if (action.action_type == Actions.Action_Type.TRANSORMATION):
-                        output.write("(TRANSFORM self (")
+                        output.write("(TRANSFORM self {0} (".format(action.action_name))
                     elif (action.action_type == Actions.Action_Type.TRANSFER):
                         output.write("(TRANSFER {0} self ".format(action.country_involved.name))
                     self.output_helper(output, decision)
